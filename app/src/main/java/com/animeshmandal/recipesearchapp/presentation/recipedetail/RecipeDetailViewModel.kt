@@ -2,7 +2,7 @@ package com.animeshmandal.recipesearchapp.presentation.recipedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.animeshmandal.recipesearchapp.core.notification.NotificationManager
+import com.animeshmandal.recipesearchapp.core.notification.RecipeNotificationManager
 import com.animeshmandal.recipesearchapp.domain.entity.Recipe
 import com.animeshmandal.recipesearchapp.domain.usecase.GetRecipeByIdUseCase
 import com.animeshmandal.recipesearchapp.domain.usecase.GetSimilarRecipesUseCase
@@ -17,7 +17,7 @@ class RecipeDetailViewModel @Inject constructor(
     private val getRecipeByIdUseCase: GetRecipeByIdUseCase,
     private val getSimilarRecipesUseCase: GetSimilarRecipesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
-    private val notificationManager: NotificationManager
+    private val notificationManager: RecipeNotificationManager
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
