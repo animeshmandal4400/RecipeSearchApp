@@ -32,8 +32,8 @@ fun MainNavigationScreen() {
     Scaffold(
         bottomBar = {
             // Hide bottom navigation on detail screens
-            if (currentDestination?.route != "recipe_detail/{recipeId}" && 
-                !currentDestination?.route?.startsWith("recipe_detail/") == true) {
+            val isDetailScreen = currentDestination?.route?.startsWith("recipe_detail/") == true
+            if (!isDetailScreen) {
                 NavigationBar {
                 NavigationBarItem(
                     icon = { 

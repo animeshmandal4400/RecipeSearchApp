@@ -45,7 +45,9 @@ fun FavoritesScreen(
                             Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                         }
                     }
-                } else null
+                } else {
+                    null
+                }
             )
         }
     ) { paddingValues ->
