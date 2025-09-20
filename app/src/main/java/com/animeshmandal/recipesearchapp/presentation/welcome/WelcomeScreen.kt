@@ -29,7 +29,7 @@ fun WelcomeScreen(
     ) {
         // Background Image
         Image(
-            painter = painterResource(id = R.drawable.welcome_background),
+            painter = painterResource(id = R.drawable.login_background_image),
             contentDescription = "Food background",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop

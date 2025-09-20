@@ -31,17 +31,6 @@ fun HomeScreen(
     }
     
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Home-Dashboard") },
-                actions = {
-                    Text(
-                        text = "09:00",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
-        },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
