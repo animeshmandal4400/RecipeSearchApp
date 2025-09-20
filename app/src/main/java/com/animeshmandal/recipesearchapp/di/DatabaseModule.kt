@@ -25,3 +25,4 @@ object DatabaseModule {
         return database.recipeDao()
     }
 }
+

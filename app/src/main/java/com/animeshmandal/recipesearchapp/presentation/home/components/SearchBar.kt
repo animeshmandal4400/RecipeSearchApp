@@ -30,3 +30,4 @@ fun SearchBar(
         shape = MaterialTheme.shapes.medium
     )
 }
+

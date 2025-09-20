@@ -20,3 +20,4 @@ inline fun <T> Result<T>.onLoading(action: () -> Unit): Result<T> {
     if (this is Result.Loading) action()
     return this
 }
+

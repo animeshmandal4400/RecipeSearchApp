@@ -8,20 +8,29 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     
-    <!-- Recipe App Colors -->
-    <color name="Orange">#FFFF6B35</color>
-    <color name="OrangeLight">#FFFF8A65</color>
-    <color name="OrangeDark">#FFE64A19</color>
+    <!-- Recipe App Colors - Matching Figma Design -->
+    <color name="Orange">#E54900</color>
+    <color name="OrangeLight">#FF6B35</color>
+    <color name="OrangeDark">#CC3F00</color>
     
-    <color name="Blue">#FF2196F3</color>
-    <color name="BlueLight">#FF64B5F6</color>
-    <color name="BlueDark">#FF1976D2</color>
+    <color name="Blue">#2196F3</color>
+    <color name="BlueLight">#64B5F6</color>
+    <color name="BlueDark">#1976D2</color>
     
     <color name="Green">#FF4CAF50</color>
     <color name="Red">#FFF44336</color>
     <color name="Yellow">#FFFFC107</color>
     
-    <color name="Background">#FFF5F5F5</color>
+    <!-- Background and Surface Colors -->
+    <color name="Background">#FFFFFFFF</color>
     <color name="Surface">#FFFFFFFF</color>
     <color name="OnSurface">#FF1C1B1F</color>
+    
+    <!-- Text Colors -->
+    <color name="TextPrimary">#FF1C1B1F</color>
+    <color name="TextSecondary">#FF757575</color>
+    
+    <!-- Card and Component Colors -->
+    <color name="CardBackground">#FFFFFFFF</color>
+    <color name="Divider">#FFE0E0E0</color>
 </resources>

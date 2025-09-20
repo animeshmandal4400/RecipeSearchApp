@@ -12,3 +12,4 @@ class GetRecipeByIdUseCase @Inject constructor(
         return recipeRepository.getRecipeById(id)
     }
 }
+

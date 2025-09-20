@@ -12,3 +12,4 @@ class GetFavoriteRecipesUseCase @Inject constructor(
         return recipeRepository.getFavoriteRecipes()
     }
 }
+

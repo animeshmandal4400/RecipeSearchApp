@@ -40,3 +40,4 @@ class NotificationReceiver : BroadcastReceiver() {
         notificationManager.notify(NOTIFICATION_ID, notification)
     }
 }
+

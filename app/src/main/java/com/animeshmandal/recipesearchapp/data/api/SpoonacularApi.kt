@@ -37,3 +37,4 @@ interface SpoonacularApi {
         @Query("number") number: Int = 5
     ): Response<List<RecipeDto>>
 }
+

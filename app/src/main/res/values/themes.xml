@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.RecipeSearchApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
+    <!-- Base application theme matching Figma design -->
+    <style name="Theme.RecipeSearchApp" parent="Theme.Material3.DayNight">
+        <!-- Primary brand color - Orange buttons from Figma -->
         <item name="colorPrimary">@color/Orange</item>
-        <item name="colorPrimaryVariant">@color/OrangeDark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
+        
+        <!-- Secondary brand color - Blue accents for section titles -->
         <item name="colorSecondary">@color/Blue</item>
-        <item name="colorSecondaryVariant">@color/BlueDark</item>
         <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        
+        <!-- Tertiary color -->
+        <item name="colorTertiary">@color/BlueDark</item>
+        <item name="colorOnTertiary">@color/white</item>
+        
+        <!-- Surface colors - White backgrounds from Figma -->
+        <item name="colorSurface">@color/Surface</item>
+        <item name="colorOnSurface">@color/TextPrimary</item>
+        <item name="colorSurfaceVariant">@color/CardBackground</item>
+        <item name="colorOnSurfaceVariant">@color/TextSecondary</item>
+        
+        <!-- Background colors -->
+        <item name="colorBackground">@color/Background</item>
+        <item name="colorOnBackground">@color/TextPrimary</item>
+        
+        <!-- Status bar and navigation -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/Background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        
+        <!-- Window background -->
         <item name="android:windowBackground">@color/Background</item>
+        
+        <!-- Button styling to match Figma rounded corners -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
+    </style>
+    
+    <!-- Shape appearances for rounded corners matching Figma design -->
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
     </style>
 </resources>

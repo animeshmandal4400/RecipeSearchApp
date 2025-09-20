@@ -265,3 +265,4 @@ private fun SimilarRecipesSection(
         }
     }
 }
+

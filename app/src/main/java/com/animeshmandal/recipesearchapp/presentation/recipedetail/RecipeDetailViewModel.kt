@@ -87,3 +87,4 @@ data class RecipeDetailUiState(
     val isFavorite: Boolean = false,
     val error: String? = null
 )
+

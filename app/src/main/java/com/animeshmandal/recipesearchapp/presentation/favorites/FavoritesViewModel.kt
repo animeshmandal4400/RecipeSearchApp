@@ -49,3 +49,4 @@ data class FavoritesUiState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
+

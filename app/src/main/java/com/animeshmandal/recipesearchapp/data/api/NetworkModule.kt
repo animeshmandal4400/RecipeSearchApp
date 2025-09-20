@@ -55,3 +55,4 @@ object NetworkModule {
         return retrofit.create(SpoonacularApi::class.java)
     }
 }
+

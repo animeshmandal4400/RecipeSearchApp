@@ -15,3 +15,4 @@ class ToggleFavoriteUseCase @Inject constructor(
         }
     }
 }
+

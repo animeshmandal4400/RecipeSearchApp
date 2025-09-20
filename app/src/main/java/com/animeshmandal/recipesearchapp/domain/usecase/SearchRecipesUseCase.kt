@@ -12,3 +12,4 @@ class SearchRecipesUseCase @Inject constructor(
         return recipeRepository.searchRecipes(query)
     }
 }
+

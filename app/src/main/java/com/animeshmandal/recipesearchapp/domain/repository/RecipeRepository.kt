@@ -35,3 +35,4 @@ interface RecipeRepository {
     suspend fun refreshRecipes()
     suspend fun clearCache()
 }
+

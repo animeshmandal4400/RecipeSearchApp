@@ -48,3 +48,4 @@ interface RecipeDao {
     @Query("SELECT COUNT(*) FROM recipes WHERE isFavorite = 1")
     suspend fun getFavoriteCount(): Int
 }
+
