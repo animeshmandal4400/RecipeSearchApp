@@ -76,7 +76,9 @@ fun HomeScreen(
                 SearchBar(
                     onSearchClick = {
                         println("🏠 HomeScreen: Search button clicked, navigating to search screen")
+                        println("🏠 HomeScreen: onNavigateToSearch function: $onNavigateToSearch")
                         onNavigateToSearch()
+                        println("🏠 HomeScreen: Navigation call completed")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
