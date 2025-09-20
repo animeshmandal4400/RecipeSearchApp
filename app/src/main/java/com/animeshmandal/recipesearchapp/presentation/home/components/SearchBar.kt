@@ -18,7 +18,9 @@ fun SearchBar(
         value = "",
         onValueChange = { },
         modifier = modifier,
-        placeholder = { Text("Search Any Recipe") },
+        placeholder = { 
+            Text("Search Any Recipe") 
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,

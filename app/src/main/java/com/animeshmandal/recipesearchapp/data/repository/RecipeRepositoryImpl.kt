@@ -30,10 +30,14 @@ class RecipeRepositoryImpl @Inject constructor(
             
             // If no cache, fetch from API
             val response = api.getRandomRecipes(10)
-            val recipes = response.recipes
-            val recipeEntities = recipes.map { mapper.mapToEntity(it) }
-            recipeDao.insertRecipes(recipeEntities)
-            Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            if (response.isSuccessful && response.body() != null) {
+                val recipes = response.body()!!.recipes
+                val recipeEntities = recipes.map { mapper.mapToEntity(it) }
+                recipeDao.insertRecipes(recipeEntities)
+                Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            } else {
+                Result.Error(Exception("Failed to fetch recipes from API"))
+            }
         } catch (e: Exception) {
             Result.Error(e)
         }
@@ -57,10 +61,14 @@ class RecipeRepositoryImpl @Inject constructor(
             
             // Fetch from API if no cache
             val response = api.getRandomRecipes(20)
-            val recipes = response.recipes
-            val recipeEntities = recipes.map { mapper.mapToEntity(it) }
-            recipeDao.insertRecipes(recipeEntities)
-            Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            if (response.isSuccessful && response.body() != null) {
+                val recipes = response.body()!!.recipes
+                val recipeEntities = recipes.map { mapper.mapToEntity(it) }
+                recipeDao.insertRecipes(recipeEntities)
+                Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            } else {
+                Result.Error(Exception("Failed to fetch recipes from API"))
+            }
         } catch (e: Exception) {
             Result.Error(e)
         }
@@ -85,10 +93,14 @@ class RecipeRepositoryImpl @Inject constructor(
             
             // Search from API
             val response = api.searchRecipes(query, 20)
-            val recipes = response.recipes
-            val recipeEntities = recipes.map { mapper.mapToEntity(it) }
-            recipeDao.insertRecipes(recipeEntities)
-            Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            if (response.isSuccessful && response.body() != null) {
+                val recipes = response.body()!!.recipes
+                val recipeEntities = recipes.map { mapper.mapToEntity(it) }
+                recipeDao.insertRecipes(recipeEntities)
+                Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            } else {
+                Result.Error(Exception("Failed to search recipes from API"))
+            }
         } catch (e: Exception) {
             Result.Error(e)
         }
@@ -107,10 +119,15 @@ class RecipeRepositoryImpl @Inject constructor(
                 Result.Success(mapper.mapToDomain(recipeEntity))
             } else {
                 // Fetch from API if not in cache
-                val recipe = api.getRecipeInformation(id)
-                val recipeEntity = mapper.mapToEntity(recipe)
-                recipeDao.insertRecipe(recipeEntity)
-                Result.Success(mapper.mapDtoToDomain(recipe))
+                val response = api.getRecipeInformation(id)
+                if (response.isSuccessful && response.body() != null) {
+                    val recipe = response.body()!!
+                    val recipeEntity = mapper.mapToEntity(recipe)
+                    recipeDao.insertRecipe(recipeEntity)
+                    Result.Success(mapper.mapDtoToDomain(recipe))
+                } else {
+                    Result.Error(Exception("Failed to fetch recipe from API"))
+                }
             }
         } catch (e: Exception) {
             Result.Error(e)
@@ -125,8 +142,13 @@ class RecipeRepositoryImpl @Inject constructor(
     
     override suspend fun getSimilarRecipes(id: Int): Result<List<Recipe>> {
         return try {
-            val recipes = api.getSimilarRecipes(id)
-            Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            val response = api.getSimilarRecipes(id)
+            if (response.isSuccessful && response.body() != null) {
+                val recipes = response.body()!!
+                Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
+            } else {
+                Result.Error(Exception("Failed to fetch similar recipes from API"))
+            }
         } catch (e: Exception) {
             Result.Error(e)
         }
