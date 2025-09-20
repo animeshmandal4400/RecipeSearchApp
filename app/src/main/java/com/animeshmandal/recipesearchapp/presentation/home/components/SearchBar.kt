@@ -1,5 +1,6 @@
 package com.animeshmandal.recipesearchapp.presentation.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -14,22 +15,29 @@ fun SearchBar(
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
-        value = "",
-        onValueChange = { },
-        modifier = modifier,
-        placeholder = { 
-            Text("Search Any Recipe") 
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search"
-            )
-        },
-        readOnly = true,
-        onClick = onSearchClick,
-        shape = MaterialTheme.shapes.medium
-    )
+    Box(modifier = modifier
+        .fillMaxWidth()
+        .height(56.dp)
+        .clickable { onSearchClick() }
+    ) {
+        OutlinedTextField(
+            value = "",
+            onValueChange = { },
+            modifier = Modifier.fillMaxSize(),
+            placeholder = {
+                Text("Search Any Recipe")
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search"
+                )
+            },
+            readOnly = true,
+            shape = MaterialTheme.shapes.medium,
+            enabled = false // disable typing
+        )
+    }
 }
+
 
