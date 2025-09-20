@@ -73,34 +73,21 @@ fun HomeScreen(
             
             // Sticky Search Bar
             stickyHeader {
-                Column {
-                    SearchBar(
-                        onSearchClick = {
-                            println("🏠 HomeScreen: Search button clicked, navigating to search screen")
-                            println("🏠 HomeScreen: onNavigateToSearch function: $onNavigateToSearch")
-                            onNavigateToSearch()
-                            println("🏠 HomeScreen: Navigation call completed")
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                MaterialTheme.colorScheme.background,
-                                MaterialTheme.shapes.medium
-                            )
-                            .padding(vertical = 8.dp)
-                    )
-                    
-                    // Test button to verify navigation works
-                    Button(
-                        onClick = {
-                            println("🧪 TEST: Direct navigation test")
-                            onNavigateToSearch()
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("TEST NAVIGATION")
-                    }
-                }
+                SearchBar(
+                    onSearchClick = {
+                        println("🏠 HomeScreen: Search button clicked, navigating to search screen")
+                        println("🏠 HomeScreen: onNavigateToSearch function: $onNavigateToSearch")
+                        onNavigateToSearch()
+                        println("🏠 HomeScreen: Navigation call completed")
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.shapes.medium
+                        )
+                        .padding(vertical = 8.dp)
+                )
             }
             
             // Popular Recipes Section

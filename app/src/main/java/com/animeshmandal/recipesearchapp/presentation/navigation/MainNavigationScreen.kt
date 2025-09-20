@@ -31,7 +31,11 @@ fun MainNavigationScreen() {
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            // Hide bottom navigation on search and detail screens
+            val isSearchOrDetailScreen = currentDestination?.route == "search" || 
+                                       currentDestination?.route?.startsWith("recipe_detail/") == true
+            if (!isSearchOrDetailScreen) {
+                NavigationBar {
                 NavigationBarItem(
                     icon = { 
                         Icon(
@@ -85,6 +89,7 @@ fun MainNavigationScreen() {
                         }
                     }
                 )
+            }
             }
         }
     ) { paddingValues ->

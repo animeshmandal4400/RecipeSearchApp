@@ -1,5 +1,6 @@
 package com.animeshmandal.recipesearchapp.presentation.search
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -54,12 +55,16 @@ fun SearchScreen(
                     println("🔍 SearchScreen: Input changed to: '$query'")
                     viewModel.updateQuery(query)
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusable(), // Ensure the field can receive focus
                 placeholder = { Text("Search Any Recipe") },
                 leadingIcon = {
                     Icon(Icons.Default.Search, contentDescription = "Search")
                 },
-                singleLine = true
+                singleLine = true,
+                enabled = true, // Ensure the field is enabled
+                readOnly = false // Make sure it's not read-only
             )
             
             when {
@@ -90,20 +95,24 @@ fun SearchScreen(
                 }
                 
                 uiState.searchResults.isNotEmpty() -> {
-                    Text(
-                        text = "Search Results",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(uiState.searchResults) { recipe ->
-                            RecipeSearchItem(
-                                recipe = recipe,
-                                onClick = { onNavigateToRecipeDetail(recipe.id) }
-                            )
+                        Text(
+                            text = "Search Results (${uiState.searchResults.size})",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                        
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(uiState.searchResults) { recipe ->
+                                RecipeSearchItem(
+                                    recipe = recipe,
+                                    onClick = { onNavigateToRecipeDetail(recipe.id) }
+                                )
+                            }
                         }
                     }
                 }

@@ -15,29 +15,33 @@ fun SearchBar(
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
-        value = "",
-        onValueChange = { },
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
             .clickable { 
                 println("🔍 SearchBar: Clicked!")
                 onSearchClick() 
+            }
+    ) {
+        OutlinedTextField(
+            value = "",
+            onValueChange = { },
+            modifier = Modifier.fillMaxSize(),
+            placeholder = {
+                Text("Search Any Recipe")
             },
-        placeholder = {
-            Text("Search Any Recipe")
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search"
-            )
-        },
-        readOnly = true,
-        shape = MaterialTheme.shapes.medium,
-        enabled = true
-    )
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search"
+                )
+            },
+            readOnly = true,
+            shape = MaterialTheme.shapes.medium,
+            enabled = false // Disable the field to prevent it from consuming clicks
+        )
+    }
 }
 
 

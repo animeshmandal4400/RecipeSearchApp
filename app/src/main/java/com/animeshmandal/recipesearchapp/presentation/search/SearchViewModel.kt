@@ -55,7 +55,7 @@ class SearchViewModel @Inject constructor(
             println("🔍 SearchViewModel: Searching for: '$query'")
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
             
-            when (val result = searchRecipesUseCase(query)) {
+            when (val result = searchRecipesUseCase.invoke(query)) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
                     println("🔍 SearchViewModel: Search successful: ${result.data.size} results")
                     _uiState.value = _uiState.value.copy(
