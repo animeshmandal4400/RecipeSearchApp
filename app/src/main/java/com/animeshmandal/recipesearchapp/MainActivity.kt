@@ -8,10 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.animeshmandal.recipesearchapp.presentation.navigation.RecipeNavigation
 import com.animeshmandal.recipesearchapp.presentation.theme.RecipeSearchAppTheme
+import com.animeshmandal.recipesearchapp.presentation.welcome.WelcomeScreen
+import com.animeshmandal.recipesearchapp.presentation.welcome.WelcomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +38,18 @@ fun RecipeSearchApp() {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        val navController = rememberNavController()
-        RecipeNavigation(navController = navController)
+        val welcomeViewModel: WelcomeViewModel = hiltViewModel()
+        val isFirstTime by welcomeViewModel.isFirstTime.collectAsState()
+        
+        if (isFirstTime) {
+            WelcomeScreen(
+                onContinueClick = {
+                    welcomeViewModel.onContinueClicked()
+                }
+            )
+        } else {
+            val navController = rememberNavController()
+            RecipeNavigation(navController = navController)
+        }
     }
 }

@@ -36,10 +36,10 @@ fun AllRecipesSection(
         )
         
         if (isLoading) {
-            LazyColumn(
+            Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(10) {
+                repeat(10) {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -56,10 +56,10 @@ fun AllRecipesSection(
                 }
             }
         } else {
-            LazyColumn(
+            Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(recipes) { recipe ->
+                recipes.forEach { recipe ->
                     RecipeListItem(
                         recipe = recipe,
                         onClick = { onRecipeClick(recipe.id) }
