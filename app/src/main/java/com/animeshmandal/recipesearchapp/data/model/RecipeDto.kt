@@ -216,11 +216,16 @@ data class RecipeSearchResponseDto(
     val recipes: List<RecipeDto>,
     
     @SerializedName("totalResults")
-    val totalResults: Int,
+    val totalResults: Int? = null,
     
     @SerializedName("offset")
-    val offset: Int,
+    val offset: Int? = null,
     
     @SerializedName("number")
-    val number: Int
+    val number: Int? = null
+)
+
+data class RandomRecipesResponseDto(
+    @SerializedName("recipes")
+    val recipes: List<RecipeDto>
 )

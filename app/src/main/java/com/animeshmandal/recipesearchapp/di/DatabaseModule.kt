@@ -2,7 +2,7 @@ package com.animeshmandal.recipesearchapp.di
 
 import android.content.Context
 import com.animeshmandal.recipesearchapp.data.database.RecipeDatabase
-import com.animeshmandal.recipesearchapp.data.database.RecipeDao
+import com.animeshmandal.recipesearchapp.data.database.dao.RecipeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

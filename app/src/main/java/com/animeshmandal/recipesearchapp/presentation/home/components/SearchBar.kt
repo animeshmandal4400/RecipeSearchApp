@@ -35,7 +35,7 @@ fun SearchBar(
             },
             readOnly = true,
             shape = MaterialTheme.shapes.medium,
-            enabled = false // disable typing
+            enabled = true
         )
     }
 }

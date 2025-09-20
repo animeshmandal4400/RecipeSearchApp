@@ -2,6 +2,7 @@ package com.animeshmandal.recipesearchapp.data.api
 
 import com.animeshmandal.recipesearchapp.data.model.RecipeDto
 import com.animeshmandal.recipesearchapp.data.model.RecipeSearchResponseDto
+import com.animeshmandal.recipesearchapp.data.model.RandomRecipesResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,7 +14,7 @@ interface SpoonacularApi {
     suspend fun getRandomRecipes(
         @Query("number") number: Int = 10,
         @Query("tags") tags: String? = null
-    ): Response<RecipeSearchResponseDto>
+    ): Response<RandomRecipesResponseDto>
     
     @GET("recipes/complexSearch")
     suspend fun searchRecipes(
