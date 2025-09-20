@@ -21,3 +21,4 @@ inline fun <T> Result<T>.onLoading(action: () -> Unit): Result<T> {
     return this
 }
 
+

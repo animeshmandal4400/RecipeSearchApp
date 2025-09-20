@@ -16,3 +16,4 @@ class ToggleFavoriteUseCase @Inject constructor(
     }
 }
 
+

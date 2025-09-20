@@ -75,3 +75,4 @@ com.animeshmandal.recipesearchapp.presentation.recipedetail.RecipeDetailViewMode
 @dagger.hilt.android.internal.lifecycle.HiltViewModelMap java.util.Map<java.lang.Class<?>,javax.inject.Provider<androidx.lifecycle.ViewModel>> is requested at
 [com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC] dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.SingletonC → com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ActivityRetainedC → com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC]
 */
+

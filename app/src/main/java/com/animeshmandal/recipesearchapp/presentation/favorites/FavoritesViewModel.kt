@@ -50,3 +50,4 @@ data class FavoritesUiState(
     val error: String? = null
 )
 
+

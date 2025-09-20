@@ -50,3 +50,4 @@ interface RecipeDao {
     suspend fun getFavoriteCount(): Int
 }
 
+

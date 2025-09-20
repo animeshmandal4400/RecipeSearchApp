@@ -97,3 +97,4 @@ data class SearchUiState(
     val error: String? = null
 )
 
+
