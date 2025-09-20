@@ -55,4 +55,23 @@ object NetworkModule {
         return retrofit.create(SpoonacularApi::class.java)
     }
 }
+/*
 
+/Users/animesh.mandal/AndroidStudioProjects/RecipeSearchApp/app/build/generated/hilt/component_sources/debug/com/animeshmandal/recipesearchapp/RecipeSearchApplication_HiltComponents.java:140: error: [Dagger/DuplicateBindings] com.animeshmandal.recipesearchapp.data.api.SpoonacularApi is bound multiple times:
+public abstract static class SingletonC implements RecipeSearchApplication_GeneratedInjector,
+^
+@Provides @Singleton com.animeshmandal.recipesearchapp.data.api.SpoonacularApi com.animeshmandal.recipesearchapp.data.api.NetworkModule.provideSpoonacularApi(retrofit2.Retrofit)
+@Provides @Singleton com.animeshmandal.recipesearchapp.data.api.SpoonacularApi com.animeshmandal.recipesearchapp.di.NetworkModuleDi.provideSpoonacularApi(retrofit2.Retrofit)
+com.animeshmandal.recipesearchapp.data.api.SpoonacularApi is injected at
+[com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.SingletonC] com.animeshmandal.recipesearchapp.data.repository.RecipeRepositoryImpl(api, …)
+com.animeshmandal.recipesearchapp.data.repository.RecipeRepositoryImpl is injected at
+[com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.SingletonC] com.animeshmandal.recipesearchapp.di.RepositoryModule.bindRecipeRepository(recipeRepositoryImpl)
+com.animeshmandal.recipesearchapp.domain.repository.RecipeRepository is injected at
+[com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC] com.animeshmandal.recipesearchapp.domain.usecase.GetRecipeByIdUseCase(recipeRepository)
+com.animeshmandal.recipesearchapp.domain.usecase.GetRecipeByIdUseCase is injected at
+[com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC] com.animeshmandal.recipesearchapp.presentation.recipedetail.RecipeDetailViewModel(getRecipeByIdUseCase, …)
+com.animeshmandal.recipesearchapp.presentation.recipedetail.RecipeDetailViewModel is injected at
+[com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC] com.animeshmandal.recipesearchapp.presentation.recipedetail.RecipeDetailViewModel_HiltModules.BindsModule.binds(vm)
+@dagger.hilt.android.internal.lifecycle.HiltViewModelMap java.util.Map<java.lang.Class<?>,javax.inject.Provider<androidx.lifecycle.ViewModel>> is requested at
+[com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC] dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.SingletonC → com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ActivityRetainedC → com.animeshmandal.recipesearchapp.RecipeSearchApplication_HiltComponents.ViewModelC]
+*/
