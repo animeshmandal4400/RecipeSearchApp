@@ -18,6 +18,7 @@ fun PopularRecipesSection(
     isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
+    println("🏠 PopularRecipesSection: Received ${recipes.size} recipes, isLoading: $isLoading")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)

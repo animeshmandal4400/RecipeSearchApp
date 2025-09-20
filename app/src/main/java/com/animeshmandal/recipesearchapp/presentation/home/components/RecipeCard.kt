@@ -21,6 +21,7 @@ fun RecipeCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    println("🏠 RecipeCard: Rendering recipe: ${recipe.title}")
     Card(
         onClick = onClick,
         modifier = modifier

@@ -30,6 +30,16 @@ fun HomeScreen(
         viewModel.loadRecipes()
     }
     
+    LaunchedEffect(uiState) {
+        println("🏠 HomeScreen: UI State updated - Popular: ${uiState.popularRecipes.size}, All: ${uiState.allRecipes.size}, LoadingPopular: ${uiState.isLoadingPopular}, LoadingAll: ${uiState.isLoadingAll}")
+        if (uiState.popularRecipes.isNotEmpty()) {
+            println("🏠 HomeScreen: Popular recipes: ${uiState.popularRecipes.map { it.title }}")
+        }
+        if (uiState.allRecipes.isNotEmpty()) {
+            println("🏠 HomeScreen: All recipes: ${uiState.allRecipes.map { it.title }}")
+        }
+    }
+    
     Scaffold(
         bottomBar = {
             NavigationBar {
@@ -48,61 +58,54 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Sticky Search Bar
-            SearchBar(
-                onSearchClick = {
-                    println("🏠 HomeScreen: Search button clicked, navigating to search screen")
-                    onNavigateToSearch()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
+            item {
+                Text(
+                    text = "Hey ${uiState.userName}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             
-            // Scrollable Content
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                item {
-                    Text(
-                        text = "Hey ${uiState.userName}",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                
-                item {
-                    Text(
-                        text = "Discover tasty and healthy recipes",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                
-                item {
-                    PopularRecipesSection(
-                        recipes = uiState.popularRecipes,
-                        onRecipeClick = onNavigateToRecipeDetail,
-                        isLoading = uiState.isLoadingPopular
-                    )
-                }
-                
-                item {
-                    AllRecipesSection(
-                        recipes = uiState.allRecipes,
-                        onRecipeClick = onNavigateToRecipeDetail,
-                        isLoading = uiState.isLoadingAll,
-                        onLoadMore = { viewModel.loadMoreRecipes() }
-                    )
-                }
+            item {
+                Text(
+                    text = "Discover tasty and healthy recipes",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            
+            item {
+                SearchBar(
+                    onSearchClick = {
+                        println("🏠 HomeScreen: Search button clicked, navigating to search screen")
+                        onNavigateToSearch()
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            
+            item {
+                PopularRecipesSection(
+                    recipes = uiState.popularRecipes,
+                    onRecipeClick = onNavigateToRecipeDetail,
+                    isLoading = uiState.isLoadingPopular
+                )
+            }
+            
+            item {
+                AllRecipesSection(
+                    recipes = uiState.allRecipes,
+                    onRecipeClick = onNavigateToRecipeDetail,
+                    isLoading = uiState.isLoadingAll,
+                    onLoadMore = { viewModel.loadMoreRecipes() }
+                )
             }
         }
     }

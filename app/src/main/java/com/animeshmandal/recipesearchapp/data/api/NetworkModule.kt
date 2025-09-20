@@ -18,6 +18,11 @@ object NetworkModule {
     private const val BASE_URL = "https://api.spoonacular.com/"
     private const val API_KEY = "28c8c016ec28486d82e4f441b21b18ee"
     
+    init {
+        println("🌐 NetworkModule: Initializing with BASE_URL: $BASE_URL")
+        println("🌐 NetworkModule: API_KEY: $API_KEY")
+    }
+    
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
@@ -28,21 +33,18 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
-                val request = chain.request()
+                val request = chain.request().newBuilder()
+                    .addHeader("X-API-Key", API_KEY)
+                    .build()
                 println("🌐 API Request: ${request.method} ${request.url}")
                 println("🌐 Headers: ${request.headers}")
+                println("🌐 API Key: $API_KEY")
                 
                 val response = chain.proceed(request)
                 println("🌐 API Response: ${response.code} ${response.message}")
                 println("🌐 Response Headers: ${response.headers}")
                 
                 response
-            }
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("X-API-Key", API_KEY)
-                    .build()
-                chain.proceed(request)
             }
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -53,6 +55,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        println("🌐 NetworkModule: Creating Retrofit with BASE_URL: $BASE_URL")
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
@@ -63,6 +66,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideSpoonacularApi(retrofit: Retrofit): SpoonacularApi {
+        println("🌐 NetworkModule: Creating SpoonacularApi")
         return retrofit.create(SpoonacularApi::class.java)
     }
 }

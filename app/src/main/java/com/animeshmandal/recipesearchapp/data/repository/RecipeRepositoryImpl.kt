@@ -21,18 +21,8 @@ class RecipeRepositoryImpl @Inject constructor(
         return try {
             println("📱 Repository: Getting popular recipes...")
             
-            // First try to get from cache
-            val cachedRecipes = recipeDao.getPopularRecipes(10)
-            val cachedList = mutableListOf<RecipeEntity>()
-            cachedRecipes.collect { cachedList.addAll(it) }
-            
-            if (cachedList.isNotEmpty()) {
-                println("📱 Repository: Found ${cachedList.size} cached recipes")
-                return Result.Success(cachedList.map { mapper.mapToDomain(it) })
-            }
-            
-            println("📱 Repository: No cache found, fetching from API...")
-            // If no cache, fetch from API
+            // Always fetch from API for now to ensure data is loaded
+            println("📱 Repository: Fetching from API...")
             val response = api.getRandomRecipes(10)
             println("📱 Repository: API response code: ${response.code()}")
             println("📱 Repository: API response body: ${response.body()}")
@@ -63,25 +53,28 @@ class RecipeRepositoryImpl @Inject constructor(
     
     override suspend fun getAllRecipes(): Result<List<Recipe>> {
         return try {
-            val cachedRecipes = recipeDao.getRecentRecipes(20)
-            val cachedList = mutableListOf<RecipeEntity>()
-            cachedRecipes.collect { cachedList.addAll(it) }
+            println("📱 Repository: Getting all recipes...")
             
-            if (cachedList.isNotEmpty()) {
-                return Result.Success(cachedList.map { mapper.mapToDomain(it) })
-            }
-            
-            // Fetch from API if no cache
+            // Always fetch from API for now to ensure data is loaded
+            println("📱 Repository: Fetching all recipes from API...")
             val response = api.getRandomRecipes(20)
+            println("📱 Repository: All recipes API response code: ${response.code()}")
+            println("📱 Repository: All recipes API response body: ${response.body()}")
+            
             if (response.isSuccessful && response.body() != null) {
                 val recipes = response.body()!!.recipes
+                println("📱 Repository: Received ${recipes.size} all recipes from API")
                 val recipeEntities = recipes.map { mapper.mapToEntity(it) }
                 recipeDao.insertRecipes(recipeEntities)
+                println("📱 Repository: Inserted ${recipeEntities.size} all recipes to database")
                 Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
             } else {
-                Result.Error(Exception("Failed to fetch recipes from API"))
+                println("📱 Repository: All recipes API call failed - ${response.code()}: ${response.message()}")
+                Result.Error(Exception("Failed to fetch all recipes from API: ${response.code()} ${response.message()}"))
             }
         } catch (e: Exception) {
+            println("📱 Repository: All recipes exception occurred: ${e.message}")
+            e.printStackTrace()
             Result.Error(e)
         }
     }

@@ -25,6 +25,7 @@ fun AllRecipesSection(
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    println("🏠 AllRecipesSection: Received ${recipes.size} recipes, isLoading: $isLoading")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)

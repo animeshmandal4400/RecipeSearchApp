@@ -30,6 +30,7 @@ class HomeViewModel @Inject constructor(
             when (val result = getPopularRecipesUseCase()) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
                     println("🏠 HomeViewModel: Popular recipes loaded successfully: ${result.data.size} recipes")
+                    println("🏠 HomeViewModel: Recipe titles: ${result.data.map { it.title }}")
                     _uiState.value = _uiState.value.copy(
                         popularRecipes = result.data,
                         isLoadingPopular = false
@@ -55,6 +56,7 @@ class HomeViewModel @Inject constructor(
             when (val result = getAllRecipesUseCase()) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
                     println("🏠 HomeViewModel: All recipes loaded successfully: ${result.data.size} recipes")
+                    println("🏠 HomeViewModel: All recipe titles: ${result.data.map { it.title }}")
                     _uiState.value = _uiState.value.copy(
                         allRecipes = result.data,
                         isLoadingAll = false
@@ -77,6 +79,7 @@ class HomeViewModel @Inject constructor(
     
     fun loadRecipes() {
         viewModelScope.launch {
+            println("🏠 HomeViewModel: loadRecipes() called")
             getPopularRecipesUseCase()
             getAllRecipesUseCase()
         }
