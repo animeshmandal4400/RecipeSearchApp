@@ -31,10 +31,7 @@ fun MainNavigationScreen() {
 
     Scaffold(
         bottomBar = {
-            // Hide bottom navigation on detail screens
-            val isDetailScreen = currentDestination?.route?.startsWith("recipe_detail/") == true
-            if (!isDetailScreen) {
-                NavigationBar {
+            NavigationBar {
                 NavigationBarItem(
                     icon = { 
                         Icon(
@@ -89,7 +86,6 @@ fun MainNavigationScreen() {
                     }
                 )
             }
-            }
         }
     ) { paddingValues ->
         NavHost(
@@ -100,7 +96,13 @@ fun MainNavigationScreen() {
                 HomeScreen(
                     onNavigateToSearch = { 
                         println("🧭 Navigation: Navigating to search screen")
-                        navController.navigate("search") 
+                        println("🧭 Navigation: Current destination: ${navController.currentDestination?.route}")
+                        try {
+                            navController.navigate("search")
+                            println("🧭 Navigation: Navigation call successful")
+                        } catch (e: Exception) {
+                            println("🧭 Navigation: Navigation failed: ${e.message}")
+                        }
                     },
                     onNavigateToRecipeDetail = { recipeId -> 
                         println("🧭 Navigation: Navigating to recipe detail: $recipeId")
@@ -114,9 +116,14 @@ fun MainNavigationScreen() {
             }
             
             composable("search") {
+                println("🧭 Navigation: SearchScreen composable is being called")
                 SearchScreen(
-                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateBack = { 
+                        println("🧭 Navigation: SearchScreen back button clicked")
+                        navController.popBackStack() 
+                    },
                     onNavigateToRecipeDetail = { recipeId -> 
+                        println("🧭 Navigation: SearchScreen navigating to recipe detail: $recipeId")
                         navController.navigate("recipe_detail/$recipeId")
                     }
                 )
