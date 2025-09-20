@@ -1,3 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Recipe Search App</string>
+    <string name="app_name">Reciiipiie</string>
+    <string name="welcome_message">Welcome to</string>
+    <string name="sign_in_message">Please sign-in to continue</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="search_any_recipe">Search Any Recipe</string>
+    <string name="popular_recipes">Popular Recipes</string>
+    <string name="all_recipes">All Recipes</string>
+    <string name="favorite_recipes">Favourite recipes</string>
+    <string name="recipe_details">Recipe Details</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="equipment">Equipment</string>
+    <string name="nutrition">Nutrition</string>
+    <string name="similar_recipes">Similar Recipes</string>
+    <string name="get_ingredients">Get Ingredients</string>
+    <string name="get_full_recipe">Get Full Recipe</string>
+    <string name="get_similar_recipe">Get Similar Recipe</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="set_reminder">Set a Reminder</string>
+    <string name="reminder_added">You will be reminded in %1$d hours</string>
+    <string name="notification_title">Recipe Reminder</string>
+    <string name="notification_message">Don\'t forget! You saved %1$s. Tap to view recipe.</string>
+    <string name="no_favorites_yet">No favorite recipes yet</string>
+    <string name="start_adding_favorites">Start adding recipes to your favorites!</string>
+    <string name="no_recipes_found">No recipes found for \'%1$s\'</string>
+    <string name="error_loading_recipes">Error loading recipes</string>
+    <string name="retry">Retry</string>
+    <string name="show_more">Show More</string>
+    <string name="show_less">Show Less</string>
+    <string name="ready_in_minutes">Ready in %1$d min</string>
+    <string name="servings">%1$d servings</string>
+    <string name="price_per_serving">₹%1$d</string>
 </resources>

@@ -7,4 +7,21 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Recipe App Colors -->
+    <color name="Orange">#FFFF6B35</color>
+    <color name="OrangeLight">#FFFF8A65</color>
+    <color name="OrangeDark">#FFE64A19</color>
+    
+    <color name="Blue">#FF2196F3</color>
+    <color name="BlueLight">#FF64B5F6</color>
+    <color name="BlueDark">#FF1976D2</color>
+    
+    <color name="Green">#FF4CAF50</color>
+    <color name="Red">#FFF44336</color>
+    <color name="Yellow">#FFFFC107</color>
+    
+    <color name="Background">#FFF5F5F5</color>
+    <color name="Surface">#FFFFFFFF</color>
+    <color name="OnSurface">#FF1C1B1F</color>
 </resources>
