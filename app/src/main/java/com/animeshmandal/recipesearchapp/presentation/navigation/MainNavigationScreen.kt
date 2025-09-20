@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -32,7 +31,10 @@ fun MainNavigationScreen() {
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            // Hide bottom navigation on detail screens
+            if (currentDestination?.route != "recipe_detail/{recipeId}" && 
+                !currentDestination?.route?.startsWith("recipe_detail/") == true) {
+                NavigationBar {
                 NavigationBarItem(
                     icon = { 
                         Icon(
@@ -51,33 +53,6 @@ fun MainNavigationScreen() {
                     selected = currentDestination?.route == "home",
                     onClick = {
                         navController.navigate("home") {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                )
-                
-                NavigationBarItem(
-                    icon = { 
-                        Icon(
-                            Icons.Default.Search, 
-                            contentDescription = "Search",
-                            tint = if (currentDestination?.route == "search") Orange else Color.Unspecified
-                        ) 
-                    },
-                    label = { 
-                        Text(
-                            "Search",
-                            color = if (currentDestination?.route == "search") Orange else Color.Unspecified,
-                            fontWeight = if (currentDestination?.route == "search") FontWeight.Bold else FontWeight.Normal
-                        ) 
-                    },
-                    selected = currentDestination?.route == "search",
-                    onClick = {
-                        navController.navigate("search") {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -114,12 +89,12 @@ fun MainNavigationScreen() {
                     }
                 )
             }
+            }
         }
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = "home",
-            modifier = Modifier.padding(paddingValues)
+            startDestination = "home"
         ) {
             composable("home") {
                 HomeScreen(
