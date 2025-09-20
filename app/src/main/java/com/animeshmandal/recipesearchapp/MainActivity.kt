@@ -12,8 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
-import com.animeshmandal.recipesearchapp.presentation.navigation.RecipeNavigation
+import com.animeshmandal.recipesearchapp.presentation.navigation.MainNavigationScreen
 import com.animeshmandal.recipesearchapp.presentation.theme.RecipeSearchAppTheme
 import com.animeshmandal.recipesearchapp.presentation.welcome.WelcomeScreen
 import com.animeshmandal.recipesearchapp.presentation.welcome.WelcomeViewModel
@@ -48,8 +47,7 @@ fun RecipeSearchApp() {
                 }
             )
         } else {
-            val navController = rememberNavController()
-            RecipeNavigation(navController = navController)
+            MainNavigationScreen()
         }
     }
 }

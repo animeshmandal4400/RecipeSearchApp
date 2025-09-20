@@ -26,6 +26,7 @@ import com.animeshmandal.recipesearchapp.domain.entity.Recipe
 fun FavoritesScreen(
     onNavigateBack: () -> Unit,
     onNavigateToRecipeDetail: (Int) -> Unit,
+    showBackButton: Boolean = true,
     viewModel: FavoritesViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -38,11 +39,13 @@ fun FavoritesScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Favorite Recipes") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                navigationIcon = if (showBackButton) {
+                    {
+                        IconButton(onClick = onNavigateBack) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        }
                     }
-                }
+                } else null
             )
         }
     ) { paddingValues ->
