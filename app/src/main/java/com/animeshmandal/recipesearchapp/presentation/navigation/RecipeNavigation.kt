@@ -17,11 +17,18 @@ fun RecipeNavigation(navController: NavHostController) {
     ) {
         composable("home") {
             HomeScreen(
-                onNavigateToSearch = { navController.navigate("search") },
+                onNavigateToSearch = { 
+                    println("🧭 Navigation: Navigating to search screen")
+                    navController.navigate("search") 
+                },
                 onNavigateToRecipeDetail = { recipeId -> 
+                    println("🧭 Navigation: Navigating to recipe detail: $recipeId")
                     navController.navigate("recipe_detail/$recipeId")
                 },
-                onNavigateToFavorites = { navController.navigate("favorites") }
+                onNavigateToFavorites = { 
+                    println("🧭 Navigation: Navigating to favorites screen")
+                    navController.navigate("favorites") 
+                }
             )
         }
         

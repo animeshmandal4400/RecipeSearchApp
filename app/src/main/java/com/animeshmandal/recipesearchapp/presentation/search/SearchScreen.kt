@@ -25,6 +25,10 @@ fun SearchScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
+    LaunchedEffect(Unit) {
+        println("🔍 SearchScreen: Screen loaded")
+    }
+    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -46,7 +50,10 @@ fun SearchScreen(
         ) {
             OutlinedTextField(
                 value = uiState.query,
-                onValueChange = viewModel::updateQuery,
+                onValueChange = { query ->
+                    println("🔍 SearchScreen: Input changed to: '$query'")
+                    viewModel.updateQuery(query)
+                },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Search Any Recipe") },
                 leadingIcon = {

@@ -25,42 +25,50 @@ class HomeViewModel @Inject constructor(
     
     private fun observeRecipes() {
         viewModelScope.launch {
+            println("🏠 HomeViewModel: Loading popular recipes...")
             _uiState.value = _uiState.value.copy(isLoadingPopular = true)
             when (val result = getPopularRecipesUseCase()) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
+                    println("🏠 HomeViewModel: Popular recipes loaded successfully: ${result.data.size} recipes")
                     _uiState.value = _uiState.value.copy(
                         popularRecipes = result.data,
                         isLoadingPopular = false
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Error -> {
+                    println("🏠 HomeViewModel: Error loading popular recipes: ${result.exception.message}")
                     _uiState.value = _uiState.value.copy(
                         isLoadingPopular = false,
                         error = result.exception.message
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Loading -> {
+                    println("🏠 HomeViewModel: Loading popular recipes...")
                     _uiState.value = _uiState.value.copy(isLoadingPopular = true)
                 }
             }
         }
         
         viewModelScope.launch {
+            println("🏠 HomeViewModel: Loading all recipes...")
             _uiState.value = _uiState.value.copy(isLoadingAll = true)
             when (val result = getAllRecipesUseCase()) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
+                    println("🏠 HomeViewModel: All recipes loaded successfully: ${result.data.size} recipes")
                     _uiState.value = _uiState.value.copy(
                         allRecipes = result.data,
                         isLoadingAll = false
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Error -> {
+                    println("🏠 HomeViewModel: Error loading all recipes: ${result.exception.message}")
                     _uiState.value = _uiState.value.copy(
                         isLoadingAll = false,
                         error = result.exception.message
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Loading -> {
+                    println("🏠 HomeViewModel: Loading all recipes...")
                     _uiState.value = _uiState.value.copy(isLoadingAll = true)
                 }
             }

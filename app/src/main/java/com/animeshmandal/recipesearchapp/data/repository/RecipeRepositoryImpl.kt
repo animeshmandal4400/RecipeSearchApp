@@ -19,26 +19,38 @@ class RecipeRepositoryImpl @Inject constructor(
     
     override suspend fun getPopularRecipes(): Result<List<Recipe>> {
         return try {
+            println("📱 Repository: Getting popular recipes...")
+            
             // First try to get from cache
             val cachedRecipes = recipeDao.getPopularRecipes(10)
             val cachedList = mutableListOf<RecipeEntity>()
             cachedRecipes.collect { cachedList.addAll(it) }
             
             if (cachedList.isNotEmpty()) {
+                println("📱 Repository: Found ${cachedList.size} cached recipes")
                 return Result.Success(cachedList.map { mapper.mapToDomain(it) })
             }
             
+            println("📱 Repository: No cache found, fetching from API...")
             // If no cache, fetch from API
             val response = api.getRandomRecipes(10)
+            println("📱 Repository: API response code: ${response.code()}")
+            println("📱 Repository: API response body: ${response.body()}")
+            
             if (response.isSuccessful && response.body() != null) {
                 val recipes = response.body()!!.recipes
+                println("📱 Repository: Received ${recipes.size} recipes from API")
                 val recipeEntities = recipes.map { mapper.mapToEntity(it) }
                 recipeDao.insertRecipes(recipeEntities)
+                println("📱 Repository: Inserted ${recipeEntities.size} recipes to database")
                 Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
             } else {
-                Result.Error(Exception("Failed to fetch recipes from API"))
+                println("📱 Repository: API call failed - ${response.code()}: ${response.message()}")
+                Result.Error(Exception("Failed to fetch recipes from API: ${response.code()} ${response.message()}"))
             }
         } catch (e: Exception) {
+            println("📱 Repository: Exception occurred: ${e.message}")
+            e.printStackTrace()
             Result.Error(e)
         }
     }
@@ -82,26 +94,38 @@ class RecipeRepositoryImpl @Inject constructor(
     
     override suspend fun searchRecipes(query: String): Result<List<Recipe>> {
         return try {
+            println("🔍 Repository: Searching recipes for query: '$query'")
+            
             // First check cache
             val cachedRecipes = recipeDao.searchRecipes(query)
             val cachedList = mutableListOf<RecipeEntity>()
             cachedRecipes.collect { cachedList.addAll(it) }
             
             if (cachedList.isNotEmpty()) {
+                println("🔍 Repository: Found ${cachedList.size} cached recipes for query: '$query'")
                 return Result.Success(cachedList.map { mapper.mapToDomain(it) })
             }
             
+            println("🔍 Repository: No cache found, searching API for: '$query'")
             // Search from API
             val response = api.searchRecipes(query, 20)
+            println("🔍 Repository: Search API response code: ${response.code()}")
+            println("🔍 Repository: Search API response body: ${response.body()}")
+            
             if (response.isSuccessful && response.body() != null) {
                 val recipes = response.body()!!.recipes
+                println("🔍 Repository: Found ${recipes.size} recipes for query: '$query'")
                 val recipeEntities = recipes.map { mapper.mapToEntity(it) }
                 recipeDao.insertRecipes(recipeEntities)
+                println("🔍 Repository: Inserted ${recipeEntities.size} search results to database")
                 Result.Success(recipes.map { mapper.mapDtoToDomain(it) })
             } else {
-                Result.Error(Exception("Failed to search recipes from API"))
+                println("🔍 Repository: Search API call failed - ${response.code()}: ${response.message()}")
+                Result.Error(Exception("Failed to search recipes from API: ${response.code()} ${response.message()}"))
             }
         } catch (e: Exception) {
+            println("🔍 Repository: Search exception occurred: ${e.message}")
+            e.printStackTrace()
             Result.Error(e)
         }
     }

@@ -28,6 +28,17 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
+                val request = chain.request()
+                println("🌐 API Request: ${request.method} ${request.url}")
+                println("🌐 Headers: ${request.headers}")
+                
+                val response = chain.proceed(request)
+                println("🌐 API Response: ${response.code} ${response.message}")
+                println("🌐 Response Headers: ${response.headers}")
+                
+                response
+            }
+            .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("X-API-Key", API_KEY)
                     .build()

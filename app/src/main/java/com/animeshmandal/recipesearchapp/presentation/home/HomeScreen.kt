@@ -48,51 +48,61 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(paddingValues)
         ) {
-            item {
-                Text(
-                    text = "Hey ${uiState.userName}",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            // Sticky Search Bar
+            SearchBar(
+                onSearchClick = {
+                    println("🏠 HomeScreen: Search button clicked, navigating to search screen")
+                    onNavigateToSearch()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
             
-            item {
-                Text(
-                    text = "Discover tasty and healthy recipes",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            item {
-                SearchBar(
-                    onSearchClick = onNavigateToSearch,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            
-            item {
-                PopularRecipesSection(
-                    recipes = uiState.popularRecipes,
-                    onRecipeClick = onNavigateToRecipeDetail,
-                    isLoading = uiState.isLoadingPopular
-                )
-            }
-            
-            item {
-                AllRecipesSection(
-                    recipes = uiState.allRecipes,
-                    onRecipeClick = onNavigateToRecipeDetail,
-                    isLoading = uiState.isLoadingAll,
-                    onLoadMore = { viewModel.loadMoreRecipes() }
-                )
+            // Scrollable Content
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Hey ${uiState.userName}",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                
+                item {
+                    Text(
+                        text = "Discover tasty and healthy recipes",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                item {
+                    PopularRecipesSection(
+                        recipes = uiState.popularRecipes,
+                        onRecipeClick = onNavigateToRecipeDetail,
+                        isLoading = uiState.isLoadingPopular
+                    )
+                }
+                
+                item {
+                    AllRecipesSection(
+                        recipes = uiState.allRecipes,
+                        onRecipeClick = onNavigateToRecipeDetail,
+                        isLoading = uiState.isLoadingAll,
+                        onLoadMore = { viewModel.loadMoreRecipes() }
+                    )
+                }
             }
         }
     }

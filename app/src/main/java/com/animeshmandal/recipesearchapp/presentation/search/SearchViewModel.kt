@@ -46,15 +46,18 @@ class SearchViewModel @Inject constructor(
     }
     
     fun updateQuery(query: String) {
+        println("🔍 SearchViewModel: updateQuery called with: '$query'")
         _query.value = query
     }
     
     private fun searchRecipes(query: String) {
         viewModelScope.launch {
+            println("🔍 SearchViewModel: Searching for: '$query'")
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
             
             when (val result = searchRecipesUseCase(query)) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
+                    println("🔍 SearchViewModel: Search successful: ${result.data.size} results")
                     _uiState.value = _uiState.value.copy(
                         searchResults = result.data,
                         isLoading = false,
@@ -62,6 +65,7 @@ class SearchViewModel @Inject constructor(
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Error -> {
+                    println("🔍 SearchViewModel: Search error: ${result.exception.message}")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         error = result.exception.message,
@@ -69,6 +73,7 @@ class SearchViewModel @Inject constructor(
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Loading -> {
+                    println("🔍 SearchViewModel: Search loading...")
                     _uiState.value = _uiState.value.copy(isLoading = true)
                 }
             }
