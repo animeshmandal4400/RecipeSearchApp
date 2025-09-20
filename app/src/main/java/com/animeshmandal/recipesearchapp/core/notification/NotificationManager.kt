@@ -5,12 +5,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RecipeNotificationManager @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) {
     
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

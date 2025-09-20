@@ -1,5 +1,6 @@
 package com.animeshmandal.recipesearchapp.presentation.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,7 +20,7 @@ import com.animeshmandal.recipesearchapp.presentation.home.components.SearchBar
 import com.animeshmandal.recipesearchapp.presentation.home.components.PopularRecipesSection
 import com.animeshmandal.recipesearchapp.presentation.home.components.AllRecipesSection
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     onNavigateToSearch: () -> Unit,

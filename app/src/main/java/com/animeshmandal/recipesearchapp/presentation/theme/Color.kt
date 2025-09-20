@@ -12,6 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 // Recipe App Colors
 val Orange = Color(0xFFFF6B35)
+val DarkOrange = Color(0xFFF6B492)
 val OrangeLight = Color(0xFFFF8A65)
 val OrangeDark = Color(0xFFE64A19)
 
@@ -22,6 +23,7 @@ val BlueDark = Color(0xFF1976D2)
 val Green = Color(0xFF4CAF50)
 val Red = Color(0xFFF44336)
 val Yellow = Color(0xFFFFC107)
+val DarkBlack = Color(0xFF13161B)
 
 // Light theme colors
 val Background = Color(0xFFF8F9FA)

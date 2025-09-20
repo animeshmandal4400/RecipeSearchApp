@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,6 +35,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.animeshmandal.recipesearchapp.domain.entity.Recipe
 import com.animeshmandal.recipesearchapp.presentation.theme.Orange
+import com.animeshmandal.recipesearchapp.R
+import com.animeshmandal.recipesearchapp.presentation.theme.DarkBlack
+import com.animeshmandal.recipesearchapp.presentation.theme.DarkOrange
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +49,7 @@ fun RecipeDetailScreen(
     viewModel: RecipeDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
     LaunchedEffect(recipeId) {
         viewModel.loadRecipe(recipeId)
     }
@@ -96,19 +102,26 @@ private fun RecipeDetailContent(
     var showReminderDialog by remember { mutableStateOf(false) }
     var showConfirmationDialog by remember { mutableStateOf(false) }
     var selectedReminderTime by remember { mutableStateOf("") }
-    
-    // Show favorite popup when favorite is toggled
+
+    var previousFavoriteState by remember { mutableStateOf(isFavorite) }
+
+    val handleToggleFavorite = {
+        onToggleFavorite()
+    }
+
     LaunchedEffect(isFavorite) {
-        if (isFavorite) {
+        if (!previousFavoriteState && isFavorite) {
             showFavoritePopup = true
         }
+        previousFavoriteState = isFavorite
     }
-    
+
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 80.dp) // Add padding for bottom action bar
+                .fillMaxHeight()
+                .padding(bottom = 80.dp, top = 30.dp)
         ) {
             // Recipe Image with Overlay
             item {
@@ -116,7 +129,7 @@ private fun RecipeDetailContent(
                     recipe = recipe,
                     isFavorite = isFavorite,
                     onNavigateBack = onNavigateBack,
-                    onToggleFavorite = onToggleFavorite
+                    onToggleFavorite = handleToggleFavorite
                 )
             }
             
@@ -155,19 +168,23 @@ private fun RecipeDetailContent(
                 RecipeHealthInfoSections(nutrition = recipe.nutrition)
             }
         }
-        
-        // Bottom Action Bar
-        BottomActionBar(
-            isFavorite = isFavorite,
-            onToggleFavorite = onToggleFavorite,
-            onSetReminder = { showReminderDialog = true },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
-        
+
+        val handleTimeSelected: (String, Int) -> Unit = { timeText, minutes ->
+            selectedReminderTime = timeText
+            showReminderDialog = false
+            showConfirmationDialog = true
+            onSetReminder(minutes)
+        }
+
+
         // Favorite Popup
         if (showFavoritePopup) {
-            FavoritePopup(
-                onDismiss = { showFavoritePopup = false }
+            FavoriteBottomPopup(
+                onDismiss = { showFavoritePopup = false },
+                onAddReminderClick = {
+                    showFavoritePopup = false
+                    showReminderDialog = true
+                }
             )
         }
         
@@ -175,12 +192,7 @@ private fun RecipeDetailContent(
         if (showReminderDialog) {
             ReminderDialog(
                 onDismiss = { showReminderDialog = false },
-                onTimeSelected = { timeText, minutes ->
-                    selectedReminderTime = timeText
-                    onSetReminder(minutes)
-                    showReminderDialog = false
-                    showConfirmationDialog = true
-                }
+                onTimeSelected = handleTimeSelected
             )
         }
         
@@ -295,14 +307,16 @@ private fun RecipeInfoCards(recipe: Recipe) {
         InfoCard(
             title = "Servings",
             value = recipe.servings.toString(),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            valueColor = Orange
         )
         
         // Price per Serving Card
         InfoCard(
             title = "Price/serving",
             value = "₹${recipe.pricePerServing.toInt()}",
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            valueColor = Orange
         )
     }
 }
@@ -378,14 +392,23 @@ private fun IngredientItem(
     ) {
         // Circular ingredient image
         Image(
-            painter = rememberAsyncImagePainter(ingredient.image),
+            painter = if (!ingredient.image.isNullOrEmpty()) {
+                rememberAsyncImagePainter(
+                    model = ingredient.image,
+                    error = painterResource(R.drawable.ic_imageplaceholder),
+                    placeholder = painterResource(R.drawable.ic_imageplaceholder)
+                )
+            } else {
+                painterResource(R.drawable.ic_imageplaceholder)
+            },
             contentDescription = ingredient.name,
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
-        
+
+
         Text(
             text = ingredient.name,
             style = MaterialTheme.typography.bodySmall,
@@ -454,7 +477,15 @@ private fun EquipmentItem(
     ) {
         // Circular equipment image
         Image(
-            painter = rememberAsyncImagePainter(equipment.image),
+            painter = if (!equipment.image.isNullOrEmpty()) {
+                rememberAsyncImagePainter(
+                    model = equipment.image,
+                    error = painterResource(R.drawable.ic_imageplaceholder),
+                    placeholder = painterResource(R.drawable.ic_imageplaceholder)
+                )
+            } else {
+                painterResource(R.drawable.ic_imageplaceholder)
+            },
             contentDescription = equipment.name,
             modifier = Modifier
                 .size(60.dp)
@@ -701,74 +732,108 @@ private fun BottomActionBar(
 }
 
 @Composable
-private fun FavoritePopup(
-    onDismiss: () -> Unit
+private fun FavoriteBottomPopup(
+    onDismiss: () -> Unit,
+    onAddReminderClick: () -> Unit
 ) {
-    Dialog(onDismissRequest = onDismiss) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { onDismiss() }
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                .wrapContentHeight()
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+                .padding(WindowInsets.navigationBars.asPaddingValues()),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = DarkBlack),
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Orange,
-                    modifier = Modifier.size(48.dp)
-                )
-                
+                // Added to Favorite Text
                 Text(
                     text = "Added to Favourite",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    color = Color.White
                 )
-                
-                Button(
-                    onClick = onDismiss,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(8.dp)
+
+                // Add Reminder Row
+                Row(
+                    modifier = Modifier
+                        .clickable { onAddReminderClick() }
+                        .padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("OK")
+                    Text(
+                        text = "Add Reminder",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = DarkOrange
+                    )
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add Reminder",
+                        tint = DarkOrange
+                    )
                 }
             }
         }
     }
 }
-
 @Composable
-private fun ReminderDialog(
+fun ReminderDialog(
     onDismiss: () -> Unit,
     onTimeSelected: (String, Int) -> Unit
 ) {
-    Dialog(onDismissRequest = onDismiss) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.8f))
+    ) {
+        val CardHeight = 400.dp
+
+        IconButton(
+            onClick = onDismiss,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .offset(y = (-CardHeight / 2) - 24.dp)
+                .background(Color.Black, shape = CircleShape)
+                .size(48.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Close",
+                tint = Color.White
+            )
+        }
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                .wrapContentHeight()
+                .align(Alignment.BottomCenter)
+                .padding(WindowInsets.navigationBars.asPaddingValues()),
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // Title
                 Text(
                     text = "Set a Reminder",
                     style = MaterialTheme.typography.headlineSmall,
@@ -776,34 +841,23 @@ private fun ReminderDialog(
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                
+
+                // Subtitle
                 Text(
                     text = "You will be reminded in",
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+
+                // Reminder options in a row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ReminderTimeOption(
-                        timeText = "30m",
-                        minutes = 30,
-                        onClick = { onTimeSelected("30m", 30) }
-                    )
-                    
-                    ReminderTimeOption(
-                        timeText = "1h 30m",
-                        minutes = 90,
-                        onClick = { onTimeSelected("1h 30m", 90) }
-                    )
-                    
-                    ReminderTimeOption(
-                        timeText = "2h",
-                        minutes = 120,
-                        onClick = { onTimeSelected("2h", 120) }
-                    )
+                    ReminderTimeOption(timeText = "30m", minutes = 30) { onTimeSelected("30m", 30) }
+                    ReminderTimeOption(timeText = "1h 30m", minutes = 90) { onTimeSelected("1h 30m", 90) }
+                    ReminderTimeOption(timeText = "2h", minutes = 120) { onTimeSelected("2h", 120) }
                 }
             }
         }
@@ -818,10 +872,8 @@ private fun ReminderTimeOption(
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = Orange
-        ),
+        modifier = Modifier.width(100.dp), // uniform width
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = Orange),
         border = ButtonDefaults.outlinedButtonBorder.copy(
             brush = androidx.compose.ui.graphics.SolidColor(Orange)
         ),
@@ -836,43 +888,51 @@ private fun ReminderTimeOption(
 }
 
 @Composable
-private fun ConfirmationDialog(
+fun ConfirmationDialog(
     reminderTime: String,
     onDismiss: () -> Unit
 ) {
-    Dialog(onDismissRequest = onDismiss) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(enabled = false) {}
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                .wrapContentHeight()
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+                .padding(WindowInsets.navigationBars.asPaddingValues()),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = DarkBlack),
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                // Confirmation Text
                 Text(
                     text = "You will be reminded in $reminderTime",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
                 )
-                
-                Button(
-                    onClick = onDismiss,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text("OK")
-                }
+
+                // OK Button / Text
+                Text(
+                    text = "OK",
+                    modifier = Modifier
+                        .clickable { onDismiss() }
+                        .padding(8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = DarkOrange
+                )
             }
         }
     }

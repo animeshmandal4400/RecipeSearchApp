@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object NetworkModule {
     
     private const val BASE_URL = "https://api.spoonacular.com/"
-    private const val API_KEY = "28c8c016ec28486d82e4f441b21b18ee"
+    private const val API_KEY = "36db2331433847e1b39cc1e47aadaa67"
     
     init {
         println("🌐 NetworkModule: Initializing with BASE_URL: $BASE_URL")

@@ -28,7 +28,7 @@ fun PopularRecipesSection(
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
-        
+
         if (isLoading) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
