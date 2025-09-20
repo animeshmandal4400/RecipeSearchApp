@@ -21,7 +21,6 @@
         <item name="colorOnSurfaceVariant">@color/TextSecondary</item>
         
         <!-- Background colors -->
-        <item name="colorBackground">@color/Background</item>
         <item name="colorOnBackground">@color/TextPrimary</item>
         
         <!-- Status bar and navigation -->

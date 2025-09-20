@@ -19,7 +19,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val recipeId = intent.getIntExtra("recipe_id", 0)
         
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Recipe Reminder")
             .setContentText("Don't forget about $recipeTitle!")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

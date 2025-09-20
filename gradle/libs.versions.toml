@@ -15,8 +15,8 @@ lottieCompose = "6.6.7"
 material = "1.12.0"
 composeBom = "2024.10.01"
 navigationCompose = "2.9.3"
-room = "2.6.1"
-hilt = "2.50"
+room = "2.7.2"
+hilt = "2.57"
 hiltNavigationCompose = "1.2.0"
 roomCompiler = "2.7.2"
 roomKtx = "2.7.2"
@@ -27,7 +27,6 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-hilt-navigation-compose-v110 = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodelCompose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler-v272 = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-ktx-v272 = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime-v272 = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
@@ -41,6 +40,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroid" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
 # Compose dependencies
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -64,6 +64,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version = "2.0.21" }
+
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
