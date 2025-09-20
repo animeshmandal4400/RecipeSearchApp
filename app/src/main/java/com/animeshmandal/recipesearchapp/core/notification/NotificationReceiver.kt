@@ -20,8 +20,8 @@ class NotificationReceiver : BroadcastReceiver() {
         
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Recipe Reminder")
-            .setContentText("Don't forget about $recipeTitle!")
+            .setContentTitle("Time to cook $recipeTitle")
+            .setContentText("Your recipe reminder is here!")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .setContentIntent(

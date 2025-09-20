@@ -1,13 +1,16 @@
 package com.animeshmandal.recipesearchapp.presentation.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,39 +61,53 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
+        val listState = rememberLazyListState()
+        
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Header section with greeting and description
             item {
-                Text(
-                    text = "Hey ${uiState.userName}",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Hey ${uiState.userName}",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    
+                    Text(
+                        text = "Discover tasty and healthy recipes",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
             
-            item {
-                Text(
-                    text = "Discover tasty and healthy recipes",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            item {
+            // Sticky Search Bar
+            stickyHeader {
                 SearchBar(
                     onSearchClick = {
                         println("🏠 HomeScreen: Search button clicked, navigating to search screen")
                         onNavigateToSearch()
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.shapes.medium
+                        )
+                        .padding(vertical = 8.dp)
                 )
             }
             
+            // Popular Recipes Section
             item {
                 PopularRecipesSection(
                     recipes = uiState.popularRecipes,
@@ -99,6 +116,7 @@ fun HomeScreen(
                 )
             }
             
+            // All Recipes Section
             item {
                 AllRecipesSection(
                     recipes = uiState.allRecipes,

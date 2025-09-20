@@ -2,6 +2,7 @@ package com.animeshmandal.recipesearchapp.presentation.recipedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.animeshmandal.recipesearchapp.core.notification.NotificationManager
 import com.animeshmandal.recipesearchapp.domain.entity.Recipe
 import com.animeshmandal.recipesearchapp.domain.usecase.GetRecipeByIdUseCase
 import com.animeshmandal.recipesearchapp.domain.usecase.GetSimilarRecipesUseCase
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class RecipeDetailViewModel @Inject constructor(
     private val getRecipeByIdUseCase: GetRecipeByIdUseCase,
     private val getSimilarRecipesUseCase: GetSimilarRecipesUseCase,
-    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val notificationManager: NotificationManager
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
@@ -77,6 +79,17 @@ class RecipeDetailViewModel @Inject constructor(
     
     fun clearError() {
         _uiState.value = _uiState.value.copy(error = null)
+    }
+    
+    fun setReminder(delayInMinutes: Int) {
+        val currentRecipe = _uiState.value.recipe
+        if (currentRecipe != null) {
+            notificationManager.scheduleReminder(
+                recipeId = currentRecipe.id,
+                recipeTitle = currentRecipe.title,
+                delayInMinutes = delayInMinutes
+            )
+        }
     }
 }
 

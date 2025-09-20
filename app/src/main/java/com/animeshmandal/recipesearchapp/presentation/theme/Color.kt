@@ -23,6 +23,12 @@ val Green = Color(0xFF4CAF50)
 val Red = Color(0xFFF44336)
 val Yellow = Color(0xFFFFC107)
 
-val Background = Color(0xFFF5F5F5)
+// Light theme colors
+val Background = Color(0xFFF8F9FA)
 val Surface = Color(0xFFFFFFFF)
-val OnSurface = Color(0xFF1C1B1F)
+val OnSurface = Color(0xFF212529)
+val OnBackground = Color(0xFF212529)
+val Primary = Orange
+val OnPrimary = Color.White
+val Secondary = Blue
+val OnSecondary = Color.White
