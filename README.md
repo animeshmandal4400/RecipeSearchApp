@@ -55,4 +55,6 @@ The **Recipe Search App** allows users to browse, search, and save recipes using
 - API Documentation: [Spoonacular API Docs](https://spoonacular.com/food-api/docs)
 - Figma Design: [Figma Link](https://www.figma.com/design/3osDPZ0cy0AMfynjkRFOoV/MathOnGo---Android---Assignment?node-id=0-1&p=f)
 
+## APK 
+- APK file: [Install Apk]()
 
