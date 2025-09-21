@@ -56,5 +56,5 @@ The **Recipe Search App** allows users to browse, search, and save recipes using
 - Figma Design: [Figma Link](https://www.figma.com/design/3osDPZ0cy0AMfynjkRFOoV/MathOnGo---Android---Assignment?node-id=0-1&p=f)
 
 ## APK 
-- APK file: [Install Apk]()
+- APK file here: [Install Apk](https://github.com/animeshmandal4400/RecipeSearchApp/releases/download/v1.0.0/app-debug.apk)
 
