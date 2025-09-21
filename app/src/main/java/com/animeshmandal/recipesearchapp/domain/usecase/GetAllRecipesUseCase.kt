@@ -11,6 +11,9 @@ class GetAllRecipesUseCase @Inject constructor(
     suspend operator fun invoke(): Result<List<Recipe>> {
         return recipeRepository.getAllRecipes()
     }
-}
 
+    suspend fun refresh(): Result<List<Recipe>> {
+        return recipeRepository.getAllRecipes()
+    }
+}
 

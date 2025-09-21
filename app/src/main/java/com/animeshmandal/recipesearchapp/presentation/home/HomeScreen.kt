@@ -58,7 +58,7 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Hey ${uiState.userName}",
+                        text = " \uD83D\uDC4B Hey ${uiState.userName}",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )

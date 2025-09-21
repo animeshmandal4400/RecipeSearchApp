@@ -13,11 +13,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.animeshmandal.recipesearchapp.domain.entity.Recipe
+import com.animeshmandal.recipesearchapp.R
 
 @Composable
 fun RecipeCard(
@@ -35,10 +37,12 @@ fun RecipeCard(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
-                model = recipe.image,
+                model = recipe.image ?:  painterResource(R.drawable.ic_imageplaceholder),
                 contentDescription = recipe.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                placeholder = painterResource(R.drawable.ic_imageplaceholder),
+                error = painterResource(R.drawable.ic_imageplaceholder)
             )
             Box(
                 modifier = Modifier

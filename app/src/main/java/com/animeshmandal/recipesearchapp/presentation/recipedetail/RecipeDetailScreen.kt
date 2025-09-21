@@ -53,7 +53,7 @@ fun RecipeDetailScreen(
     LaunchedEffect(recipeId) {
         viewModel.loadRecipe(recipeId)
     }
-    
+
     when {
         uiState.isLoading -> {
             Box(
@@ -63,7 +63,7 @@ fun RecipeDetailScreen(
                 CircularProgressIndicator()
             }
         }
-        
+
         uiState.error != null -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -75,7 +75,7 @@ fun RecipeDetailScreen(
                 )
             }
         }
-        
+
         uiState.recipe != null -> {
             RecipeDetailContent(
                 recipe = uiState.recipe!!,
@@ -801,13 +801,13 @@ fun ReminderDialog(
             .fillMaxSize()
             .background(Color.Black.copy(alpha = 0.8f))
     ) {
-        val CardHeight = 400.dp
+        val cardHeight = 400.dp
 
         IconButton(
             onClick = onDismiss,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .offset(y = (-CardHeight / 2) - 24.dp)
+                .offset(y = (-cardHeight / 2) - 24.dp)
                 .background(Color.Black, shape = CircleShape)
                 .size(48.dp)
         ) {

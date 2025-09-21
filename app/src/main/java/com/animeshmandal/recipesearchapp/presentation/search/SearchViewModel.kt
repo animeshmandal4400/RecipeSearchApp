@@ -2,6 +2,7 @@ package com.animeshmandal.recipesearchapp.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.animeshmandal.recipesearchapp.domain.entity.Recipe
 import com.animeshmandal.recipesearchapp.domain.usecase.SearchRecipesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,13 +18,32 @@ class SearchViewModel @Inject constructor(
     
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
-    
     private val _query = MutableStateFlow("")
-    
+    val query: StateFlow<String> = _query.asStateFlow()
+
+    private val _bottomSheetStack = MutableStateFlow<List<BottomSheetScreen>>(emptyList())
+    val bottomSheetStack: StateFlow<List<BottomSheetScreen>> = _bottomSheetStack.asStateFlow()
+
+    fun pushBottomSheet(screen: BottomSheetScreen) {
+        _bottomSheetStack.value = _bottomSheetStack.value + screen
+    }
+
+    fun popBottomSheet() {
+        _bottomSheetStack.value = _bottomSheetStack.value.dropLast(1)
+    }
+
+    sealed class BottomSheetScreen {
+        data class RecipeDetail(val recipe: Recipe) : BottomSheetScreen()
+        data class Ingredients(val recipe: Recipe) : BottomSheetScreen()
+        data class IngredientsExpandable(val recipe: Recipe) : BottomSheetScreen()
+        data class FullRecipe(val recipe: Recipe) : BottomSheetScreen()
+        data class SimilarRecipe(val recipe: Recipe) : BottomSheetScreen()
+    }
+
     init {
         observeQuery()
     }
-    
+
     @OptIn(FlowPreview::class)
     private fun observeQuery() {
         viewModelScope.launch {
@@ -32,7 +52,7 @@ class SearchViewModel @Inject constructor(
                 .distinctUntilChanged()
                 .collect { query ->
                     _uiState.value = _uiState.value.copy(query = query)
-                    
+
                     if (query.isNotEmpty()) {
                         searchRecipes(query)
                     } else {
@@ -49,15 +69,17 @@ class SearchViewModel @Inject constructor(
         println("🔍 SearchViewModel: updateQuery called with: '$query'")
         _query.value = query
     }
-    
+
     private fun searchRecipes(query: String) {
         viewModelScope.launch {
             println("🔍 SearchViewModel: Searching for: '$query'")
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            
+
             when (val result = searchRecipesUseCase.invoke(query)) {
                 is com.animeshmandal.recipesearchapp.core.util.Result.Success -> {
-                    println("🔍 SearchViewModel: Search successful: ${result.data.size} results")
+                    println("✅ Success: received ${result.data.size} recipes")
+                    result.data.forEach { println("🍲 Recipe -> ${it.id}: ${it.title}") }
+
                     _uiState.value = _uiState.value.copy(
                         searchResults = result.data,
                         isLoading = false,
@@ -65,7 +87,7 @@ class SearchViewModel @Inject constructor(
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Error -> {
-                    println("🔍 SearchViewModel: Search error: ${result.exception.message}")
+                    println("❌ Error: ${result.exception.message}")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         error = result.exception.message,
@@ -73,13 +95,13 @@ class SearchViewModel @Inject constructor(
                     )
                 }
                 is com.animeshmandal.recipesearchapp.core.util.Result.Loading -> {
-                    println("🔍 SearchViewModel: Search loading...")
+                    println("⏳ Loading...")
                     _uiState.value = _uiState.value.copy(isLoading = true)
                 }
             }
         }
     }
-    
+
     private fun getDefaultSuggestions(): List<String> {
         return listOf(
             "Shahi paneer",

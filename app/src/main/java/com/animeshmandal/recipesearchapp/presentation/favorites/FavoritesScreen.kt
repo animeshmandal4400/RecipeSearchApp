@@ -39,14 +39,16 @@ fun FavoritesScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Favorite Recipes") },
-                navigationIcon = if (showBackButton) {
-                    {
-                        IconButton(onClick = onNavigateBack) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                navigationIcon = {
+                    if (showBackButton) {
+                        @androidx.compose.runtime.Composable {
+                            IconButton(onClick = onNavigateBack) {
+                                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                            }
                         }
+                    } else {
+                        null
                     }
-                } else {
-                    null
                 }
             )
         }

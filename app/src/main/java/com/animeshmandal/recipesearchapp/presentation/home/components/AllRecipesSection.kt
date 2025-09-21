@@ -7,16 +7,28 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.animeshmandal.recipesearchapp.R
 import com.animeshmandal.recipesearchapp.domain.entity.Recipe
+import androidx.compose.runtime.remember
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.animeshmandal.recipesearchapp.core.util.RecipeOrAd
+import com.animeshmandal.recipesearchapp.core.util.toListWithAds
+import com.animeshmandal.recipesearchapp.presentation.favorites.LottieAnimationView
 
 @Composable
 fun AllRecipesSection(
@@ -27,6 +39,7 @@ fun AllRecipesSection(
     modifier: Modifier = Modifier
 ) {
     println("🏠 AllRecipesSection: Received ${recipes.size} recipes, isLoading: $isLoading")
+    val itemsWithAds: List<RecipeOrAd> = remember(recipes) { recipes.toListWithAds() }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -58,14 +71,16 @@ fun AllRecipesSection(
                 }
             }
         } else {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                recipes.forEach { recipe ->
-                    RecipeListItem(
-                        recipe = recipe,
-                        onClick = { onRecipeClick(recipe.id) }
-                    )
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                itemsWithAds.forEach { item ->
+                    when (item) {
+                        is RecipeOrAd.RecipeItem -> RecipeListItem(
+                            recipe = item.recipe,
+                            onClick = { onRecipeClick(item.recipe.id) }
+                        )
+
+                        is RecipeOrAd.AdItem -> AdListItem(lottieRes = R.raw.adeverisement)
+                    }
                 }
             }
         }
@@ -93,7 +108,11 @@ private fun RecipeListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = rememberAsyncImagePainter(recipe.image),
+                painter = rememberAsyncImagePainter(
+                    model = recipe.image ?: R.drawable.ic_imageplaceholder,
+                    placeholder = painterResource(R.drawable.ic_imageplaceholder),
+                    error = painterResource(R.drawable.ic_imageplaceholder)
+                ),
                 contentDescription = recipe.title,
                 modifier = Modifier
                     .fillMaxHeight()
@@ -123,6 +142,32 @@ private fun RecipeListItem(
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun AdListItem(
+    modifier: Modifier = Modifier,
+    lottieRes: Int
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(120.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.LightGray)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            LottieAnimationView(
+                modifier = Modifier.fillMaxSize(),
+                animationRes = lottieRes,
+                iterations = LottieConstants.IterateForever
+            )
         }
     }
 }

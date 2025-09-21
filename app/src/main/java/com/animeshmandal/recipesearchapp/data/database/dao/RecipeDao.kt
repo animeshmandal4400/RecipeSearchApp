@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecipeDao {
-    
+
     @Query("SELECT * FROM recipes WHERE isFavorite = 1 ORDER BY cachedAt DESC")
     fun getFavoriteRecipes(): Flow<List<RecipeEntity>>
     
@@ -48,6 +48,14 @@ interface RecipeDao {
     
     @Query("SELECT COUNT(*) FROM recipes WHERE isFavorite = 1")
     suspend fun getFavoriteCount(): Int
+
+    @Query("SELECT * FROM recipes ORDER BY cachedAt DESC LIMIT :limit")
+    suspend fun getRecentRecipesSync(limit: Int = 20): List<RecipeEntity>
+
+    @Query("SELECT * FROM recipes WHERE veryPopular = 1 ORDER BY cachedAt DESC LIMIT :limit")
+    suspend fun getPopularRecipesSync(limit: Int = 10): List<RecipeEntity>
+
+
 }
 
 

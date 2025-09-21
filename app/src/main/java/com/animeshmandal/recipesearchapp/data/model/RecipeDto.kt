@@ -212,15 +212,15 @@ data class WeightPerServingDto(
 )
 
 data class RecipeSearchResponseDto(
-    @SerializedName("recipes")
-    val recipes: List<RecipeDto>,
-    
+    @SerializedName("results")
+    val results: List<RecipeDto> = emptyList(),
+
     @SerializedName("totalResults")
     val totalResults: Int? = null,
-    
+
     @SerializedName("offset")
     val offset: Int? = null,
-    
+
     @SerializedName("number")
     val number: Int? = null
 )

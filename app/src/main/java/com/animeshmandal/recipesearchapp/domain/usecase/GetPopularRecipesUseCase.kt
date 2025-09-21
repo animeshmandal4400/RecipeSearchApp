@@ -11,4 +11,8 @@ class GetPopularRecipesUseCase @Inject constructor(
     suspend operator fun invoke(): Result<List<Recipe>> {
         return recipeRepository.getPopularRecipes()
     }
+
+    suspend fun refresh(): Result<List<Recipe>> {
+        return recipeRepository.getPopularRecipes()
+    }
 }

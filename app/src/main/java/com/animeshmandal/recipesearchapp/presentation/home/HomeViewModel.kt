@@ -9,20 +9,29 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.animeshmandal.recipesearchapp.core.util.Result
+import com.animeshmandal.recipesearchapp.domain.repository.RecipeRepository
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getPopularRecipesUseCase: GetPopularRecipesUseCase,
-    private val getAllRecipesUseCase: GetAllRecipesUseCase
+    private val getAllRecipesUseCase: GetAllRecipesUseCase,
+    private val recipeRepository: RecipeRepository
+
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-    
+
     init {
-        observeRecipes()
+        viewModelScope.launch {
+            loadCachedRecipes()
+            observeRecipes()
+            refreshRecipes()
+        }
     }
-    
+
+
     private fun observeRecipes() {
         viewModelScope.launch {
             println("🏠 HomeViewModel: Loading popular recipes...")
@@ -76,7 +85,59 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-    
+
+    private suspend fun loadCachedRecipes() {
+        try {
+            val cachedPopular = recipeRepository.getPopularRecipesFlow().firstOrNull()
+            if (!cachedPopular.isNullOrEmpty()) {
+                _uiState.value = _uiState.value.copy(popularRecipes = cachedPopular)
+            }
+
+            val cachedAll = recipeRepository.getAllRecipesFlow().firstOrNull()
+            if (!cachedAll.isNullOrEmpty()) {
+                _uiState.value = _uiState.value.copy(allRecipes = cachedAll)
+            }
+        } catch (e: Exception) {
+            println("🏠 HomeViewModel: Error loading cached recipes: ${e.message}")
+        }
+    }
+
+
+    private suspend fun refreshRecipes() {
+        try {
+            _uiState.value = _uiState.value.copy(isLoadingPopular = true, isLoadingAll = true)
+
+            // Popular Recipes API fetch
+            when (val popularResponse = recipeRepository.getPopularRecipes()) {
+                is Result.Success -> _uiState.value = _uiState.value.copy(
+                    popularRecipes = popularResponse.data,
+                    isLoadingPopular = false
+                )
+                is Result.Error -> _uiState.value = _uiState.value.copy(
+                    isLoadingPopular = false,
+                    error = popularResponse.exception.message
+                )
+                is Result.Loading -> _uiState.value = _uiState.value.copy(isLoadingPopular = true)
+            }
+
+            // All Recipes API fetch
+            when (val allResponse = recipeRepository.getAllRecipes()) {
+                is Result.Success -> _uiState.value = _uiState.value.copy(
+                    allRecipes = allResponse.data,
+                    isLoadingAll = false
+                )
+                is Result.Error -> _uiState.value = _uiState.value.copy(
+                    isLoadingAll = false,
+                    error = allResponse.exception.message
+                )
+                is Result.Loading -> _uiState.value = _uiState.value.copy(isLoadingAll = true)
+            }
+
+        } catch (e: Exception) {
+            println("🏠 HomeViewModel: Failed to refresh recipes: ${e.message}")
+        }
+    }
+
     fun loadRecipes() {
         viewModelScope.launch {
             println("🏠 HomeViewModel: loadRecipes() called")
