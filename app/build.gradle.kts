@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,7 +8,6 @@ plugins {
     alias(libs.plugins.hilt)
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
 }
-
 
 android {
     namespace = "com.animeshmandal.recipesearchapp"
@@ -17,11 +19,20 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
+        vectorDrawables.useSupportLibrary = true
+
+        // Load API key from local.properties
+        val localPropertiesFile = rootProject.file("local.properties")
+        val props = Properties().apply {
+            load(FileInputStream(localPropertiesFile))
         }
+
+        buildConfigField(
+            "String",
+            "SPOONACULAR_API_KEY",
+            "\"${props.getProperty("api_key")}\""
+        )
     }
 
     buildTypes {
@@ -33,22 +44,26 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+
+    packaging.resources {
+        excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 }
+
 
 dependencies {
     implementation(libs.androidx.core.ktx)

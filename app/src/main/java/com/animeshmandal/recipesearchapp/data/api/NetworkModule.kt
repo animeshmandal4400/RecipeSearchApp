@@ -1,5 +1,6 @@
 package com.animeshmandal.recipesearchapp.data.api
 
+import com.animeshmandal.recipesearchapp.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +17,7 @@ import javax.inject.Singleton
 object NetworkModule {
     
     private const val BASE_URL = "https://api.spoonacular.com/"
-    private const val API_KEY = "ea16602c082648fab38a0980ec168401"
+    private const val API_KEY = BuildConfig.SPOONACULAR_API_KEY
     
     init {
         println("🌐 NetworkModule: Initializing with BASE_URL: $BASE_URL")
